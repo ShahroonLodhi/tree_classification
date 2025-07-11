@@ -14,7 +14,7 @@ app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
 
 # Load models
 cnn = CNN(num_classes=30)
-cnn.load_state_dict(torch.load("backend/tree_classifier.pth", map_location="cpu"))
+cnn.load_state_dict(torch.load("tree_classifier.pth", map_location="cpu"))
 cnn.eval()
 
 unet = UNet()
