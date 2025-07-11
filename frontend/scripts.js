@@ -1,26 +1,32 @@
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const resultLabel = document.getElementById("result");
 
 // Start webcam
 navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
     video.srcObject = stream;
+    video.play();
 });
 
-// Automatically capture frame every second
+// Auto draw frame + send every second
 setInterval(() => {
     if (video.readyState === 4) {
-        captureAndSendFrame();
+        captureFrameAndPredict();
     }
-}, 1000); // 1000 ms = 1 frame/sec
+}, 1000);
 
-function captureAndSendFrame() {
+function captureFrameAndPredict() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     ctx.drawImage(video, 0, 0);
 
-    canvas.toBlob(blob => {
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = video.videoWidth;
+    tempCanvas.height = video.videoHeight;
+    const tempCtx = tempCanvas.getContext("2d");
+    tempCtx.drawImage(video, 0, 0);
+
+    tempCanvas.toBlob(blob => {
         const formData = new FormData();
         formData.append("file", blob, "frame.jpg");
 
@@ -30,16 +36,26 @@ function captureAndSendFrame() {
         })
         .then(res => res.json())
         .then(data => {
-            // Display predicted class
-            resultLabel.innerText = "Predicted Class: " + data.label;
+            // Redraw webcam feed
+            ctx.drawImage(video, 0, 0);
 
-            // Display returned image (with bounding box)
-            const img = new Image();
-            img.src = "data:image/jpeg;base64," + data.image_base64;
-            img.onload = () => ctx.drawImage(img, 0, 0);
+            if (data.box) {
+                const { x, y, w, h } = data.box;
+                const label = data.label;
+
+                // Draw bounding box
+                ctx.strokeStyle = "lime";
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x, y, w, h);
+
+                // Draw label
+                ctx.fillStyle = "black";
+                ctx.font = "18px Arial";
+                ctx.fillText(label, x + 5, y - 10);
+            }
         })
         .catch(err => {
-            console.error("Error:", err);
+            console.error("Prediction error:", err);
         });
     }, "image/jpeg");
 }
