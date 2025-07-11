@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-Time Tree Detection</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+        }
+        canvas {
+            width: 100%;
+            max-width: 480px;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+        }
+        #result {
+            display: none; /* Hidden now, label shown on canvas */
+        }
+    </style>
+</head>
+<body>
+    <h2>🌲 Tree Detector</h2>
+
+    <!-- Hidden video feed (only used for reading frames) -->
+    <video id="video" autoplay playsinline style="display:none;"></video>
+
+    <!-- Canvas where we draw everything -->
+    <canvas id="canvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
