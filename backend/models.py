@@ -42,5 +42,7 @@ class CNN(nn.Module):
     return x
 
 # Load pretrained U-Net
-def load_unet():
-    return smp.Unet(encoder_name="resnet34", encoder_weights="imagenet", in_channels=3, classes=1)
+
+class UNet(smp.Unet):
+    def __init__(self):
+        super().__init__(encoder_name="resnet34", in_channels=3, classes=1)
