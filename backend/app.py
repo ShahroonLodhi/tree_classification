@@ -18,7 +18,6 @@ cnn.load_state_dict(torch.load("tree_classifier.pth", map_location="cpu"))
 cnn.eval()
 
 unet = UNet()
-unet.load_state_dict(torch.load("backend/unet.pth", map_location="cpu"))
 unet.eval()
 
 class_names = ['amla', 'asopalav', 'babul', 'bamboo', 'banyan', 'bili', 'cactus', 'champa', 'coconut', 'garmalo', 'gulmohor', 'gunda', 'jamun', 'kanchan', 'kesudo', 'khajur', 'mango', 'motichanoti', 'neem', 'nilgiri', 'other', 'pilikaren', 'pipal', 'saptaparni', 'shirish', 'simlo', 'sitafal', 'sonmahor', 'sugarcane', 'vad']
