@@ -5,7 +5,7 @@ import torch, io, base64
 from PIL import Image
 import numpy as np
 import cv2
-from .models import CNN, UNet  # Your custom CNN + U-Net
+from models import CNN, UNet  # Your custom CNN + U-Net
 
 app = FastAPI()
 
